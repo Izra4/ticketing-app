@@ -6,7 +6,7 @@
         Admin
     }
 
-    public enum TickedStatus
+    public enum TicketStatus
     {
         Confirmed,
         Canceled,
