@@ -12,7 +12,7 @@ namespace Ticketing.Models
         [Required, Column(TypeName = "varchar(200)")]
         public string Name { get; set; }
 
-        [Required]
+        [Required, Column(TypeName = "text")]
         public string Description { get; set; }
 
         [Required]
@@ -27,6 +27,7 @@ namespace Ticketing.Models
         [Required]
         public int MaxAudience {  get; set; }
 
+        [Column(TypeName = "text")]
         public string Note { get; set; }
 
         [Required]
