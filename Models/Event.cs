@@ -16,7 +16,7 @@ namespace Ticketing.Models
         public string Description { get; set; }
 
         [Required]
-        public DateTime Time { get; set; }
+        public DateTime time { get; set; }
 
         [Required, Column(TypeName = "varchar(100)")]
         public string Place { get; set; }
@@ -25,15 +25,17 @@ namespace Ticketing.Models
         public int Price { get; set; }
 
         [Required]
-        public int MaxAudience {  get; set; }
+        public int Max_Audience {  get; set; }
 
         [Column(TypeName = "text")]
         public string Note { get; set; }
 
         [Required]
-        public bool IsPublished { get; set; } = false;
+        public bool Is_Published { get; set; } = false;
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime Created_At { get; set; } = DateTime.Now;
+
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

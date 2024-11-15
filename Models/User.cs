@@ -12,7 +12,7 @@ namespace Ticketing.Models
         [Required, Column(TypeName = "varchar(200)")]
         public string Name { get; set; }
 
-        [Required, EmailAddress]
+        [Required, EmailAddress, Column(TypeName = "varchar(255)")]
         public string Email { get; set; }
 
         [Required, Phone, Column(TypeName = "varchar(15)")]
@@ -26,6 +26,8 @@ namespace Ticketing.Models
         public UserRole Role { get; set; } = UserRole.User;
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime Created_At { get; set; } = DateTime.Now;
+
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }
