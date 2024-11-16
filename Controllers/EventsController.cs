@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Ticketing.Data;
+using Ticketing.Dtos.Event;
+using Ticketing.Helper;
 using Ticketing.Models;
 
 namespace Ticketing.Controllers
@@ -75,12 +79,61 @@ namespace Ticketing.Controllers
 
         // POST: api/Events
         [HttpPost]
-        public async Task<ActionResult<Event>> PostEvent(Event @event)
+        public async Task<ActionResult<Event>> PostEvent(PostDto post)
         {
-            _context.Events.Add(@event);
+            var userIdStr = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+            if (userIdStr == null)
+                return Unauthorized(new ApiResponse<object>
+                {
+                    Code = 401,
+                    Status = "error",
+                    Data = null,
+                    Message = "invalid token"
+                });
+
+            var user = await _context.Users.FindAsync(Guid.Parse(userIdStr));
+
+            if (user == null || user.Role == 0)
+                return Unauthorized(new ApiResponse<object>
+                {
+                    Code = 200,
+                    Status = "error",
+                    Data = null,
+                    Message = "unauthorized user"
+                });
+
+            if (!DateTime.TryParse(post.Time, out var parsedTime))
+                return BadRequest(new ApiResponse<object>
+                {
+                    Code = 400,
+                    Status = "error",
+                    Data = null,
+                    Message = "invalid time format"
+                });
+
+            var newEvent = new Event
+            {
+                Name = post.Name,
+                Description = post.Description,
+                time = parsedTime,
+                Place = post.Place,
+                Price = post.Price,
+                Max_Audience = post.Max_Audience,
+                Note = post.Note,
+            };
+
+            _context.Events.Add(newEvent);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEvent", new { id = @event.Id }, @event);
+            return CreatedAtAction(nameof(GetEvent), new { id = newEvent.Id },
+                new ApiResponse<object>
+                {
+                    Code = 201,
+                    Status = "success",
+                    Data = newEvent,
+                    Message = "event successfully created"
+                });
         }
 
         // DELETE: api/Events/5
