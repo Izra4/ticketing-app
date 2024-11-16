@@ -17,6 +17,7 @@ builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(connectionsString));
 
 builder.Services.AddJwtAuth(builder.Configuration);
+builder.Services.SwaggerConfiguration(builder.Configuration);
 
 var app = builder.Build();
 
