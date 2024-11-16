@@ -11,7 +11,7 @@ namespace Ticketing.Dtos.Event
         public string Description { get; set; }
 
         [Required]
-        public DateTime Time{ get; set; }
+        public string Time{ get; set; }
 
         [Required]
         public string Place { get; set; }
