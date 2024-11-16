@@ -96,6 +96,8 @@ namespace Ticketing.Migrations
 
                     b.HasIndex("EventId");
 
+                    b.HasIndex("Unique_Number");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Ticket");
@@ -130,6 +132,9 @@ namespace Ticketing.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email", "Phone")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

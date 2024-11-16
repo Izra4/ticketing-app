@@ -12,5 +12,16 @@ namespace Ticketing.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Event> Events { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasIndex(u => new {u.Email, u.Phone})
+                .IsUnique();
+
+            modelBuilder.Entity<Ticket>()
+                .HasIndex(t => new { t.Unique_Number });
+        }
+
     }
 }
