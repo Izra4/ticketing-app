@@ -144,7 +144,7 @@ namespace Ticketing.Controllers
             return Ok(new ApiResponse<object>
             {
                 Code = 200,
-                Status = "error",
+                Status = "success",
                 Data = new { Token = token},
                 Message = "login success"
             });

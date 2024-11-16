@@ -22,6 +22,7 @@ namespace Ticketing.Data
             modelBuilder.Entity<Ticket>()
                 .HasIndex(t => new { t.Unique_Number });
         }
+        public DbSet<Ticketing.Models.Ticket> Ticket { get; set; } = default!;
 
     }
 }
